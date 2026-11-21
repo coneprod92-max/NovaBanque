@@ -1,0 +1,307 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#07152d">
+<title>NovaBanque — Votre avenir, notre priorité</title>
+<style>
+:root {
+  --navy:#07152d;
+  --blue:#102d52;
+  --gold:#d9ad59;
+  --light:#f4f6fa;
+  --muted:#758197;
+  --white:#fff;
+}
+* {box-sizing:border-box;margin:0;padding:0}
+html {scroll-behavior:smooth}
+body {font-family:Arial,sans-serif;background:var(--light);color:#17233c}
+button,input {font:inherit}
+header {
+  background:var(--navy);color:white;padding:20px 7%;
+  display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:18px
+}
+.logo {font-size:25px;font-weight:800;letter-spacing:1px}
+.logo span {color:var(--gold)}
+nav {display:flex;gap:22px;flex-wrap:wrap}
+nav a {color:white;text-decoration:none;font-size:14px}
+.btn-gold {
+  background:var(--gold);color:var(--navy);padding:13px 20px;
+  border:0;border-radius:7px;font-weight:bold;cursor:pointer;
+  text-decoration:none;display:inline-block
+}
+.hero {
+  min-height:480px;padding:85px 8%;
+  background:linear-gradient(115deg,#07152d,#102d52 65%,#17446b);
+  color:white;display:flex;align-items:center
+}
+.hero-content {max-width:680px}
+.eyebrow {color:#e5bd70;font-size:12px;font-weight:bold;letter-spacing:3px;margin-bottom:22px}
+h1 {font-size:clamp(38px,6vw,65px);line-height:1.1;margin-bottom:24px}
+.hero p {color:#d5dfed;font-size:17px;line-height:1.8;margin-bottom:30px}
+.features {padding:65px 7%;text-align:center}
+.features h2,.section-heading {font-size:31px;margin-bottom:12px}
+.features-intro {color:var(--muted);margin-bottom:35px}
+.cards {display:grid;grid-template-columns:repeat(3,1fr);gap:22px;text-align:left}
+.card {background:white;padding:28px;border-radius:12px;border:1px solid #e9edf4}
+.symbol {font-size:30px;margin-bottom:18px}
+.card h3 {margin-bottom:12px}
+.card p {color:var(--muted);line-height:1.7;font-size:14px}
+
+/* Connexion */
+.modal {
+  position:fixed;inset:0;background:#07152de8;z-index:20;
+  display:none;align-items:center;justify-content:center;padding:20px;
+}
+.modal.open {display:flex}
+.login-panel {
+  background:white;width:100%;max-width:430px;border-radius:17px;
+  padding:35px;position:relative;box-shadow:0 20px 60px #0004;
+}
+.close {
+  position:absolute;right:18px;top:15px;border:0;background:none;
+  font-size:25px;cursor:pointer;color:#68748a
+}
+.login-logo {font-size:23px;font-weight:800;color:var(--navy);margin-bottom:28px}
+.login-logo span {color:#bd8b35}
+.login-panel h2 {font-size:25px;margin-bottom:10px}
+.login-panel .intro {font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:25px}
+.field {margin-bottom:18px}
+.field label {display:block;font-size:13px;font-weight:bold;margin-bottom:8px}
+.field input {
+  width:100%;padding:14px;border:1px solid #dce2eb;
+  border-radius:7px;outline:none
+}
+.field input:focus {border-color:#315d91;box-shadow:0 0 0 3px #315d9118}
+.full {width:100%;margin-top:5px}
+.demo-hint {
+  margin-top:18px;background:#fff6e6;color:#74531b;
+  border-radius:8px;padding:12px;font-size:12px;line-height:1.6
+}
+.login-error {color:#bd3434;font-size:13px;margin:12px 0;display:none}
+
+/* Tableau de bord */
+.client-section {padding:70px 7%;background:#eaf0f7;display:none}
+.client-section.visible {display:block}
+.client-title {text-align:center;margin-bottom:35px}
+.client-title p {color:var(--muted);margin-top:10px}
+.dashboard {
+  max-width:1050px;margin:auto;background:white;border-radius:18px;
+  overflow:hidden;box-shadow:0 15px 45px #07152d12
+}
+.dashboard-top {
+  background:var(--navy);color:white;padding:25px 30px;
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:15px
+}
+.demo-tag {color:#f1d18f;font-size:11px;letter-spacing:1px;font-weight:bold}
+.dashboard-body {padding:30px}
+.welcome {margin-bottom:25px}
+.welcome h3 {font-size:23px;margin-bottom:7px}
+.welcome p {color:var(--muted);font-size:14px}
+.account-card {
+  background:linear-gradient(120deg,#102d52,#1b4774);
+  color:white;border-radius:15px;padding:28px;margin-bottom:28px;
+  position:relative;overflow:hidden
+}
+.account-label {color:#d1dced;font-size:13px}
+.balance-line {display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:15px;margin:12px 0 25px}
+.balance {font-size:clamp(27px,5vw,38px);font-weight:bold}
+.toggle {
+  background:#ffffff20;color:white;border:1px solid #ffffff50;
+  border-radius:6px;padding:9px 12px;cursor:pointer
+}
+.account-bottom {display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap;color:#d1dced;font-size:12px}
+.account-bottom strong {display:block;color:white;margin-top:6px}
+.quick-actions {display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:32px}
+.action {border:1px solid #e5eaf1;background:#f8faff;padding:17px 10px;border-radius:10px;text-align:center}
+.action span {display:block;font-size:23px;margin-bottom:9px}
+.action strong {font-size:13px}
+.operations h3 {margin-bottom:18px}
+.operation {display:flex;justify-content:space-between;align-items:center;gap:15px;padding:17px 0;border-bottom:1px solid #edf0f5}
+.operation:last-child {border-bottom:0}
+.operation-name {font-weight:bold;font-size:14px}
+.operation-date {color:var(--muted);font-size:12px;margin-top:5px}
+.amount {font-weight:bold;font-size:14px;white-space:nowrap}
+.positive {color:#15945e}
+.negative {color:#d34b52}
+.logout {background:#ffffff1c;color:white;border:1px solid #ffffff55;padding:10px 15px;border-radius:6px;cursor:pointer}
+.notice {
+  margin:30px 7% 55px;padding:18px;background:#fff6e6;color:#74531b;
+  border:1px solid #f0d9a9;border-radius:8px;font-size:13px;line-height:1.6
+}
+footer {background:var(--navy);color:#aebbd0;text-align:center;padding:28px 15px;font-size:13px}
+@media(max-width:750px) {
+  header {padding:18px 5%}
+  nav {width:100%;gap:15px}
+  .hero {padding:65px 6%;min-height:430px}
+  .cards {grid-template-columns:1fr}
+  .client-section {padding:50px 4%}
+  .dashboard-body {padding:20px 16px}
+  .dashboard-top {padding:20px}
+  .quick-actions {grid-template-columns:1fr 1fr}
+  .notice {margin-left:5%;margin-right:5%}
+  .login-panel {padding:28px 22px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">NOVA<span>BANQUE</span></div>
+  <nav>
+    <a href="#accueil">Accueil</a>
+    <a href="#services">Services</a>
+    <a href="#apropos">À propos</a>
+  </nav>
+  <button class="btn-gold" id="openLogin">Espace client démo</button>
+</header>
+
+<main>
+<section class="hero" id="accueil">
+  <div class="hero-content">
+    <div class="eyebrow">BANQUE FICTIVE · PROTOTYPE INDÉPENDANT</div>
+    <h1>Votre avenir mérite une nouvelle vision.</h1>
+    <p>Découvrez une expérience bancaire imaginée autour de la simplicité, de l'innovation et d'une relation de confiance.</p>
+    <button class="btn-gold" id="heroLogin">Découvrir mon espace</button>
+  </div>
+</section>
+
+<section class="features" id="services">
+  <h2>La banque autrement</h2>
+  <p class="features-intro">Une expérience pensée pour accompagner vos projets.</p>
+  <div class="cards">
+    <article class="card"><div class="symbol">✦</div><h3>Gestion simplifiée</h3><p>Une interface claire pour visualiser vos finances dans cette démonstration.</p></article>
+    <article class="card"><div class="symbol">◈</div><h3>Services numériques</h3><p>Des parcours digitaux conçus pour être accessibles sur tous vos écrans.</p></article>
+    <article class="card"><div class="symbol">⌁</div><h3>Une vision moderne</h3><p>Un concept bancaire qui place l'expérience utilisateur au premier plan.</p></article>
+  </div>
+</section>
+
+<section class="client-section" id="clientSection">
+  <div class="client-title">
+    <h2 class="section-heading">Votre espace personnel</h2>
+    <p>Tableau de bord bancaire de démonstration.</p>
+  </div>
+  <div class="dashboard">
+    <div class="dashboard-top">
+      <div><div class="demo-tag">ESPACE CLIENT · DÉMONSTRATION</div><h2 style="margin-top:8px">Mon tableau de bord</h2></div>
+      <button class="logout" id="logout">Déconnexion</button>
+    </div>
+    <div class="dashboard-body">
+      <div class="welcome"><h3>Bonjour, Alex 👋</h3><p>Bienvenue dans votre espace de démonstration.</p></div>
+      <div class="account-card">
+        <div class="account-label">SOLDE DISPONIBLE · COMPTE FICTIF</div>
+        <div class="balance-line">
+          <div class="balance" id="balance">12 850,75 €</div>
+          <button class="toggle" id="toggleBalance">Masquer le solde</button>
+        </div>
+        <div class="account-bottom">
+          <div>TYPE DE COMPTE<strong>Compte courant démo</strong></div>
+          <div>RÉFÉRENCE FICTIVE<strong>•••• •••• 4829</strong></div>
+        </div>
+      </div>
+      <div class="quick-actions">
+        <div class="action"><span>↗</span><strong>Virement démo</strong></div>
+        <div class="action"><span>▤</span><strong>Mes relevés</strong></div>
+        <div class="action"><span>◈</span><strong>Mes cartes</strong></div>
+      </div>
+      <div class="operations">
+        <h3>Opérations récentes fictives</h3>
+        <div class="operation"><div><div class="operation-name">Salaire de démonstration</div><div class="operation-date">01 novembre 2026 · Crédit fictif</div></div><div class="amount positive">+ 2 400,00 €</div></div>
+        <div class="operation"><div><div class="operation-name">Courses alimentaires</div><div class="operation-date">03 novembre 2026 · Débit fictif</div></div><div class="amount negative">− 86,40 €</div></div>
+        <div class="operation"><div><div class="operation-name">Abonnement numérique</div><div class="operation-date">05 novembre 2026 · Débit fictif</div></div><div class="amount negative">− 14,99 €</div></div>
+        <div class="operation"><div><div class="operation-name">Remboursement démo</div><div class="operation-date">08 novembre 2026 · Crédit fictif</div></div><div class="amount positive">+ 120,00 €</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="notice" id="apropos">
+  <strong>Information importante :</strong> NovaBanque est une identité fictive créée pour une démonstration réalisée par ChadoDigitalStudio. Ce prototype n'est pas un établissement bancaire et ne propose aucun service financier réel. Le solde et les opérations affichés sont inventés. N'utilisez aucune véritable information personnelle ou bancaire.
+</div>
+</main>
+
+<div class="modal" id="loginModal" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
+  <div class="login-panel">
+    <button class="close" id="closeLogin" aria-label="Fermer">×</button>
+    <div class="login-logo">NOVA<span>BANQUE</span></div>
+    <h2 id="loginTitle">Bienvenue</h2>
+    <p class="intro">Accédez à l'espace de démonstration NovaBanque.</p>
+    <form id="loginForm">
+      <div class="field">
+        <label for="demoId">Identifiant fictif</label>
+        <input id="demoId" type="text" placeholder="Entrez DEMO" autocomplete="off" required>
+      </div>
+      <div class="field">
+        <label for="demoPassword">Code de démonstration</label>
+        <input id="demoPassword" type="password" placeholder="Entrez NOVA2026" autocomplete="off" required>
+      </div>
+      <p class="login-error" id="loginError">Identifiants de démonstration incorrects.</p>
+      <button class="btn-gold full" type="submit">Accéder à la démonstration</button>
+    </form>
+    <div class="demo-hint">
+      <strong>Accès de démonstration uniquement</strong><br>
+      Identifiant : DEMO<br>
+      Code : NOVA2026<br>
+      Ces valeurs sont fictives et ne protègent aucun compte réel.
+    </div>
+  </div>
+</div>
+
+<footer>© 2026 NovaBanque — Prototype indépendant conçu par ChadoDigitalStudio.</footer>
+
+<script>
+const modal = document.getElementById("loginModal");
+const clientSection = document.getElementById("clientSection");
+const loginError = document.getElementById("loginError");
+
+function openLogin() {
+  modal.classList.add("open");
+  loginError.style.display = "none";
+}
+function closeLogin() {
+  modal.classList.remove("open");
+}
+document.getElementById("openLogin").addEventListener("click",openLogin);
+document.getElementById("heroLogin").addEventListener("click",openLogin);
+document.getElementById("closeLogin").addEventListener("click",closeLogin);
+
+modal.addEventListener("click",function(event) {
+  if(event.target === modal) closeLogin();
+});
+
+document.getElementById("loginForm").addEventListener("submit",function(event) {
+  event.preventDefault();
+  const id = document.getElementById("demoId").value.trim();
+  const password = document.getElementById("demoPassword").value;
+
+  if(id === "DEMO" && password === "NOVA2026") {
+    closeLogin();
+    clientSection.classList.add("visible");
+    clientSection.scrollIntoView({behavior:"smooth"});
+  } else {
+    loginError.style.display = "block";
+  }
+});
+
+document.getElementById("logout").addEventListener("click",function() {
+  clientSection.classList.remove("visible");
+  document.getElementById("loginForm").reset();
+  document.getElementById("accueil").scrollIntoView({behavior:"smooth"});
+});
+
+const balance = document.getElementById("balance");
+const toggle = document.getElementById("toggleBalance");
+const realBalance = "12 850,75 €";
+
+toggle.addEventListener("click",function() {
+  const hidden = balance.textContent === "••••••••";
+  balance.textContent = hidden ? realBalance : "••••••••";
+  toggle.textContent = hidden ? "Masquer le solde" : "Afficher le solde";
+});
+</script>
+</body>
+</html>
+
