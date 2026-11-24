@@ -80,7 +80,7 @@ footer{background:var(--navy);color:#aebbd0;text-align:center;padding:25px;font-
 <div class="metric"><div class="metric-label">SORTIES FICTIVES</div><div class="metric-value" id="totalOut">−101,39 €</div><div class="metric-note">Données simulées</div></div>
 <div class="metric"><div class="metric-label">ÉPARGNE SIMULÉE</div><div class="metric-value">3 200,00 €</div><div class="metric-note">Solde fictif</div></div></div>
 <div class="content-grid"><div class="panel"><h3>Mon compte principal</h3><div class="account-card"><small>SOLDE DISPONIBLE · COMPTE FICTIF</small>
-<div class="balance-row"><div class="balance" id="balance">12 850,75 €</div><button class="toggle" id="toggleBalance">Masquer</button></div>
+<div class="balance-row"><div class="balance" id="balance">Illimité</div><button class="toggle" id="toggleBalance">Masquer</button></div>
 <div class="account-foot"><div>TYPE DE COMPTE<strong>Compte courant démo</strong></div><div>RÉFÉRENCE FICTIVE<strong>•••• •••• 4829</strong></div></div></div>
 <div class="actions"><button class="action" id="quickTransfer"><span>↗</span><strong>Virement démo</strong></button><button class="action" data-message="Aucun relevé réel n'est disponible."><span>▤</span><strong>Mes relevés</strong></button><button class="action" data-message="Les cartes présentées sont fictives."><span>◈</span><strong>Mes cartes</strong></button></div></div>
 <div class="panel"><h3>Évolution fictive</h3><p style="font-size:12px;color:#7b879a">Illustration de données sur 6 mois</p><div class="chart">
@@ -91,7 +91,7 @@ footer{background:var(--navy);color:#aebbd0;text-align:center;padding:25px;font-
 <div class="operation"><div><div class="op-name">Abonnement numérique</div><div class="op-date">05 novembre 2026 · Débit fictif</div></div><div class="amount negative">−14,99 €</div></div>
 <div class="operation"><div><div class="op-name">Remboursement démo</div><div class="op-date">08 novembre 2026 · Crédit fictif</div></div><div class="amount positive">+120,00 €</div></div>
 </div></div></div>
-<div class="page-content" id="accounts"><div class="info-box"><h3>Mes comptes fictifs</h3><p>Compte courant de démonstration : <strong id="accountBalanceText">12 850,75 €</strong></p><p>Épargne simulée : 3 200,00 €</p><p>Ces montants sont inventés et ne correspondent à aucun compte réel.</p></div></div>
+<div class="page-content" id="accounts"><div class="info-box"><h3>Mes comptes fictifs</h3><p>Compte courant de démonstration : <strong id="accountBalanceText">Illimité</strong></p><p>Épargne simulée : 3 200,00 €</p><p>Ces montants sont inventés et ne correspondent à aucun compte réel.</p></div></div>
 <div class="page-content" id="transfers">
 <div class="transfer-layout"><div class="transfer-panel"><h3>Virement de démonstration</h3><p class="muted">Remplissez ce formulaire avec des coordonnées entièrement fictives pour simuler une opération et tester l'envoi d'une notification par e-mail. N'utilisez jamais de véritable IBAN, BIC ou numéro de compte.</p>
 <form id="transferForm"><div class="form-grid">
@@ -100,12 +100,12 @@ footer{background:var(--navy);color:#aebbd0;text-align:center;padding:25px;font-
 <div class="field"><label for="beneficiaryIban">IBAN fictif du bénéficiaire</label><input id="beneficiaryIban" required maxlength="34" autocomplete="off" placeholder="Ex. FR00 0000 0000 0000 0000 0000 000"></div>
 <div class="field"><label for="beneficiaryBic">BIC / SWIFT fictif</label><input id="beneficiaryBic" required maxlength="11" autocomplete="off" placeholder="Ex. DEMOFR00XXX"></div>
 <div class="field"><label for="beneficiaryAccount">Numéro de compte fictif</label><input id="beneficiaryAccount" required maxlength="34" autocomplete="off" placeholder="Ex. 00000000000000000000"></div>
-<div class="field"><label for="transferAmount">Montant fictif (€)</label><input id="transferAmount" type="number" min="0.01" max="12850.75" step="0.01" required placeholder="Ex. 25,00"></div>
+<div class="field"><label for="transferAmount">Montant fictif (€)</label><input id="transferAmount" type="number" min="0.01" step="0.01" required placeholder="Ex. 25,00"></div>
 <div class="field"><label for="senderName">Nom de l'émetteur</label><input id="senderName" value="Alex (compte démo)" maxlength="80" required></div>
 <div class="field wide"><label for="transferReason">Motif (facultatif)</label><textarea id="transferReason" maxlength="180" placeholder="Ex. Test de notification"></textarea></div>
 </div>
-<div class="balance-hint">Solde fictif disponible : <strong id="availableBalance">12 850,75 €</strong></div>
-<div class="sim-warning"><strong>Attention — simulation uniquement.</strong> Cette opération modifie uniquement le solde fictif enregistré dans ce navigateur. Aucun transfert réel ni crédit bancaire n'est effectué.</div>
+<div class="balance-hint">Solde de démonstration : <strong id="availableBalance">Illimité</strong></div>
+<div class="sim-warning"><strong>Attention — simulation uniquement.</strong> Cette opération est enregistrée dans l'historique de démonstration de ce navigateur. Aucun transfert réel ni crédit bancaire n'est effectué.</div>
 <button class="btn gold full" id="submitTransfer" type="submit">Effectuer la simulation</button>
 <div class="status" id="transferStatus" role="status" aria-live="polite"></div>
 </form></div>
@@ -161,9 +161,9 @@ function openPage(page){pages.forEach(p=>p.classList.toggle("active",p.id===page
 navItems.forEach(item=>item.addEventListener("click",()=>openPage(item.dataset.page)));
 document.getElementById("quickTransfer").addEventListener("click",()=>openPage("transfers"));
 const balanceEl=document.getElementById("balance"),toggle=document.getElementById("toggleBalance");
-function renderBalance(){const formatted=money(balanceValue);document.getElementById("availableBalance").textContent=formatted;document.getElementById("accountBalanceText").textContent=formatted;if(balanceEl.textContent!=="••••••••")balanceEl.textContent=formatted}
-toggle.addEventListener("click",()=>{const hidden=balanceEl.textContent==="••••••••";balanceEl.textContent=hidden?money(balanceValue):"••••••••";toggle.textContent=hidden?"Masquer":"Afficher"});
-function persist(){try{localStorage.setItem(BALANCE_KEY,String(balanceValue));localStorage.setItem(STORAGE_KEY,JSON.stringify(customTransfers))}catch(e){console.warn("Impossible d'enregistrer localement.",e)}}
+function renderBalance(){const formatted="Illimité";document.getElementById("availableBalance").textContent=formatted;document.getElementById("accountBalanceText").textContent=formatted;if(balanceEl.textContent!=="••••••••")balanceEl.textContent=formatted}
+toggle.addEventListener("click",()=>{const hidden=balanceEl.textContent==="••••••••";balanceEl.textContent=hidden?"Illimité":"••••••••";toggle.textContent=hidden?"Masquer":"Afficher"});
+function persist(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(customTransfers))}catch(e){console.warn("Impossible d'enregistrer localement.",e)}}
 function escapeHtml(value){return String(value).replace(/[&<>"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]))}
 function renderHistory(){
  const target=document.getElementById("transferHistory");
@@ -196,10 +196,10 @@ transferForm.addEventListener("submit",async event=>{
  if(!/^[A-Z0-9]{15,34}$/.test(beneficiaryIban)){statusBox.className="status warning";statusBox.textContent="Format d’IBAN fictif invalide. Saisissez entre 15 et 34 caractères alphanumériques.";return}
  if(!/^[A-Z0-9]{8}([A-Z0-9]{3})?$/.test(beneficiaryBic)){statusBox.className="status warning";statusBox.textContent="Format BIC/SWIFT invalide. Utilisez 8 ou 11 caractères alphanumériques.";return}
  if(!/^[A-Za-z0-9-]{5,34}$/.test(beneficiaryAccount)){statusBox.className="status warning";statusBox.textContent="Le numéro de compte fictif doit contenir entre 5 et 34 caractères.";return}
- if(amount>balanceValue){statusBox.className="status warning";statusBox.textContent="Solde fictif insuffisant pour cette simulation.";return}
+ 
  const now=new Date(),date=now.toLocaleString("fr-FR"),reference="DEMO-"+now.getTime().toString().slice(-8);
  const record={beneficiary,beneficiaryIban,beneficiaryBic,beneficiaryAccount,amount,date,reference,reason};
- balanceValue=Math.round((balanceValue-amount)*100)/100;
+ 
  customTransfers.push(record);persist();renderBalance();renderHistory();renderOperations();
  submitButton.disabled=true;submitButton.textContent="Enregistrement de la simulation…";
  let emailSent=false,emailMessage="";
